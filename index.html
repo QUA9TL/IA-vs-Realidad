@@ -1,0 +1,1952 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>IA vs Realidad</title>
+
+  <style>
+    /* Tipografía corporativa Bosch Sans (misma que usan los proyectos de Bosch) */
+    @font-face { font-family: "Bosch Sans"; font-weight: 300; font-style: normal; font-display: swap;
+      src: url("fonts/BoschSans-Light.woff2") format("woff2"), url("fonts/BoschSans-Light.woff") format("woff"); }
+    @font-face { font-family: "Bosch Sans"; font-weight: 400; font-style: normal; font-display: swap;
+      src: url("fonts/BoschSans-Regular.woff2") format("woff2"), url("fonts/BoschSans-Regular.woff") format("woff"); }
+    @font-face { font-family: "Bosch Sans"; font-weight: 500; font-style: normal; font-display: swap;
+      src: url("fonts/BoschSans-Medium.woff2") format("woff2"), url("fonts/BoschSans-Medium.woff") format("woff"); }
+    @font-face { font-family: "Bosch Sans"; font-weight: 600 900; font-style: normal; font-display: swap;
+      src: url("fonts/BoschSans-Bold.woff2") format("woff2"), url("fonts/BoschSans-Bold.woff") format("woff"); }
+
+    :root {
+      --green: #00884A;
+      --red: #ce1126;
+      --cream: #fffaf1;
+      --ink: #17211c;
+      --card: #fff;
+      --muted: #647069;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Bosch Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: #f4f6f8;
+      color: var(--ink);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 44px 20px 20px;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+    }
+
+    /* Franja superior Bosch (supergraphic) */
+    .supergraphic {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 0.5rem;
+      background-image: url("images/Bosch-Supergraphic_RGB.svg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      z-index: 10;
+    }
+
+.app {
+  width: min(780px, 100%);
+  background: rgba(255, 255, 255, 0.97);
+  border-radius: 28px;
+  overflow: hidden;
+
+  border: 1px solid rgba(0, 136, 74, 0.12);
+
+  box-shadow:
+    0 8px 25px rgba(23, 33, 28, 0.08),
+    0 25px 70px rgba(23, 58, 43, 0.16);
+
+  backdrop-filter: blur(8px);
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+header {
+  padding: 18px 28px;
+
+  background: #fff;
+  color: var(--ink);
+  border-bottom: 1px solid #e0e4e8;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+
+  position: relative;
+}
+
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+}
+
+.brand .logo {
+  height: 34px;
+  width: auto;
+  display: block;
+  flex-shrink: 0;
+}
+
+.brand h1 {
+  padding-left: 18px;
+  border-left: 1px solid #c1c7cc;
+}
+
+
+h1 {
+  font-size: clamp(1.35rem, 4vw, 2rem);
+  margin: 0;
+
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--ink);
+}
+
+
+/* ============================================================
+   PUNTUACIÓN
+============================================================ */
+
+.score {
+  font-weight: 800;
+
+  background: #eff1f2;
+  color: var(--ink);
+
+  padding: 10px 16px;
+
+  border-radius: 999px;
+
+  white-space: nowrap;
+
+  border: 1px solid #c1c7cc;
+}
+
+
+/* ============================================================
+   CONTENIDO
+============================================================ */
+
+main {
+  padding: 28px;
+}
+
+
+/* ============================================================
+   PROGRESO
+============================================================ */
+
+.progress {
+  height: 10px;
+
+  background: #edf1ee;
+
+  border-radius: 999px;
+
+  overflow: hidden;
+
+  margin-bottom: 20px;
+
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.06);
+}
+
+
+.bar {
+  height: 100%;
+  width: 0;
+
+  background: linear-gradient(
+    90deg,
+    var(--green),
+    var(--red)
+  );
+
+  border-radius: inherit;
+
+  transition: width .35s ease;
+
+  box-shadow: 0 0 8px rgba(0, 136, 74, .25);
+}
+
+
+/* ============================================================
+   PREGUNTA
+============================================================ */
+
+.question {
+  text-align: center;
+
+  color: var(--muted);
+
+  font-weight: 750;
+
+  margin: 0 0 18px;
+
+  font-size: .96rem;
+
+  letter-spacing: .2px;
+}
+
+
+/* ============================================================
+   IMAGEN
+============================================================ */
+
+.frame {
+  width: 100%;
+
+  background: #e8eeea;
+
+  border-radius: 20px;
+
+  overflow: hidden;
+
+  border: 1px solid #dfe8e3;
+
+  box-shadow:
+    0 4px 16px rgba(23, 33, 28, 0.08),
+    0 12px 28px rgba(23, 33, 28, 0.06);
+}
+
+
+.frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+.fallback {
+  padding: 30px;
+
+  text-align: center;
+
+  color: #53645b;
+
+  font-weight: 700;
+}
+
+
+/* ============================================================
+   BOTONES REAL / IA
+============================================================ */
+
+.buttons {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 16px;
+
+  margin-top: 22px;
+}
+
+
+button {
+  border: none;
+
+  border-radius: 16px;
+
+  padding: 17px 20px;
+
+  font-size: 1.05rem;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    background .18s ease;
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+
+/* Botón REAL */
+
+.real {
+  background: linear-gradient(
+    135deg,
+    #e3f5ed,
+    #d4f0e3
+  );
+
+  color: #005a3e;
+
+  border: 1px solid rgba(0, 136, 74, 0.13);
+
+  box-shadow:
+    0 5px 14px rgba(0,136,74,.10);
+}
+
+
+.real:hover {
+  transform: translateY(-3px);
+
+  background: linear-gradient(
+    135deg,
+    #d8f2e6,
+    #c8eadb
+  );
+
+  box-shadow:
+    0 9px 22px rgba(0,136,74,.18);
+}
+
+
+/* Botón IA */
+
+.ai {
+  background: linear-gradient(
+    135deg,
+    #fbe6e9,
+    #f8d8dc
+  );
+
+  color: #a30d20;
+
+  border: 1px solid rgba(17, 181, 206, 0.13);
+
+  box-shadow:
+    0 5px 14px rgba(206,17,38,.10);
+}
+
+
+.ai:hover {
+  transform: translateY(-3px);
+
+  background: linear-gradient(
+    135deg,
+    #f8dce0,
+    #f5cdd3
+  );
+
+  box-shadow:
+    0 9px 22px rgba(206,17,38,.18);
+}
+
+
+button:active {
+  transform: translateY(0) scale(.98);
+}
+
+
+button:disabled {
+  opacity: .5;
+
+  cursor: not-allowed;
+
+  transform: none;
+
+  box-shadow: none;
+}
+
+
+/* ============================================================
+   BOTÓN SIGUIENTE
+============================================================ */
+.next {
+  width: 100%;
+  margin-top: 18px;
+  padding: 17px 24px;
+
+  background: linear-gradient(
+    135deg,
+    var(--green) 0%,
+    #006f3d 100%
+  );
+
+  color: white;
+
+  border: none;
+  border-radius: 16px;
+
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: .2px;
+
+  display: none;
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 16px rgba(0, 136, 74, .20),
+    0 2px 5px rgba(0, 0, 0, .08);
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    filter .18s ease;
+}
+
+.next:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 10px 25px rgba(0, 136, 74, .28),
+    0 4px 8px rgba(0, 0, 0, .08);
+
+  filter: brightness(1.06);
+}
+
+.next:active {
+  transform: translateY(0) scale(.985);
+
+  box-shadow:
+    0 4px 10px rgba(0, 136, 74, .18);
+}
+
+/* ============================================================
+   FEEDBACK
+============================================================ */
+
+.feedback {
+  display: none;
+
+  margin-top: 20px;
+  padding: 20px 22px;
+
+  border-radius: 16px;
+
+  /* Texto más grande */
+  font-size: 1.05rem;
+
+  /* Más espacio entre líneas */
+  line-height: 1.65;
+
+  /* Texto justificado */
+  text-align: justify;
+
+  /* Evita espacios demasiado grandes */
+  hyphens: auto;
+}
+
+.feedback strong {
+  display: block;
+
+  font-size: 1.18rem;
+  font-weight: 850;
+
+  /* El título no se justifica */
+  text-align: left;
+
+  margin-bottom: 6px;
+}
+
+.feedback.ok {
+  display: block;
+
+  background: #e6f7ef;
+  color: #005f41;
+
+  border-left: 5px solid var(--green);
+
+  box-shadow:
+    0 5px 15px rgba(0, 136, 74, .10);
+}
+
+.feedback.bad {
+  display: block;
+
+  background: #fdebed;
+  color: #971023;
+
+  border-left: 5px solid var(--red);
+
+  box-shadow:
+    0 5px 15px rgba(206, 17, 38, .10);
+}
+
+/* ============================================================
+   RESULTADOS
+============================================================ */
+
+.end {
+  text-align: center;
+
+  padding: 45px 20px;
+}
+
+
+.end h2 {
+  font-size: 2.1rem;
+
+  margin: .3em;
+
+  color: var(--ink);
+}
+
+
+.restart {
+  background: linear-gradient(
+    135deg,
+    var(--green),
+    #006b3b
+  );
+
+  color: white;
+
+  margin-top: 16px;
+
+  padding: 15px 25px;
+
+  min-width: 210px;
+
+  box-shadow: 0 7px 18px rgba(0,136,74,.20);
+}
+
+
+.restart:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 0 11px 26px rgba(0,136,74,.28);
+}
+
+
+/* ============================================================
+   TEXTO INFERIOR
+============================================================ */
+
+.tiny {
+  font-size: .88rem;
+
+  color: var(--muted);
+
+  margin-top: 16px;
+
+  text-align: center;
+
+  opacity: .9;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media(max-width: 520px) {
+
+  .app {
+    border-radius: 20px;
+  }
+
+  header {
+    align-items: flex-start;
+    flex-direction: column;
+
+    padding: 20px;
+  }
+
+  .buttons {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  main {
+    padding: 18px;
+  }
+
+  button {
+    padding: 16px;
+  }
+
+  .frame {
+    border-radius: 16px;
+  }
+}
+
+    @media(max-width:520px) {
+
+      header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .brand .logo {
+        height: 26px;
+      }
+
+      .brand h1 {
+        padding-left: 12px;
+      }
+
+      .buttons {
+        grid-template-columns: 1fr;
+      }
+
+      main {
+        padding: 17px;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div class="supergraphic"></div>
+
+<section class="app">
+
+  <header>
+    <div class="brand">
+      <img class="logo" src="images/bosch_logo.png" alt="Bosch">
+      <h1>IA vs Realidad</h1>
+    </div>
+
+    <div class="score" id="score">
+      Puntos: 0
+    </div>
+  </header>
+
+  <main id="game">
+
+    <div class="progress">
+      <div class="bar" id="bar"></div>
+    </div>
+
+    <p class="question" id="counter">
+      Ronda 1 · Imagen 1 de 10
+    </p>
+
+    <div class="frame">
+
+      <img
+        id="photo"
+        alt="Imagen de México"
+      >
+
+      <div
+        class="fallback"
+        id="fallback"
+        hidden>
+      </div>
+
+    </div>
+
+    <div class="buttons">
+
+      <button
+        class="real"
+        id="realBtn">
+         Es REAL
+      </button>
+
+      <button
+        class="ai"
+        id="aiBtn">
+         Es IA
+      </button>
+
+    </div>
+
+    <div
+      class="feedback"
+      id="feedback">
+    </div>
+
+    <button
+      class="next"
+      id="nextBtn">
+      Siguiente imagen →
+    </button>
+
+    <p class="tiny">
+      Observa detalles, iluminación, manos, letras, sombras y repeticiones.
+    </p>
+
+  </main>
+
+</section>
+
+<script>
+
+  // ============================================================
+  // CONFIGURACIÓN
+  // ============================================================
+
+  const ROUND_SIZE = 10;
+  const IMAGES_PER_TYPE = 5;
+  const TOTAL_ROUNDS = 6;
+
+
+  // ============================================================
+  // BANCO DE IMÁGENES
+  // 30 REALES + 30 IA
+  // ============================================================
+
+  const allImages = [
+
+    // =========================
+    // REALES
+    // =========================
+
+    {
+      src: 'images/mexico-real-01.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'Esta imagen proviene de una fotografía real.'
+    },
+
+    {
+      src: 'images/mexico-real-02.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'Era una escena auténtica capturada con cámara.'
+    },
+
+    {
+      src: 'images/mexico-real-03.jpg',
+      type: 'real',
+      title: 'Fotografía real ',
+      explanation: 'La imagen corresponde a una fotografía real.'
+    },
+
+    {
+      src: 'images/mexico-real-04.jpg',
+      type: 'real',
+      title: 'Fotografía real ',
+      explanation: 'Esta escena fue capturada mediante una cámara.'
+    },
+
+    {
+      src: 'images/mexico-real-05.jpg',
+      type: 'real',
+      title: 'Fotografía real ',
+      explanation: 'La fotografía corresponde a una escena real.'
+    },
+
+    {
+      src: 'images/mexico-real-06.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'Esta imagen es una fotografía auténtica.'
+    },
+
+    {
+      src: 'images/mexico-real-07.jpg',
+      type: 'real',
+      title: 'Fotografía real ',
+      explanation: 'La imagen fue capturada en el mundo real.'
+    },
+
+    {
+      src: 'images/mexico-real-08.jpg',
+      type: 'real',
+      title: 'Fotografía real ',
+      explanation: 'Esta imagen proviene de una fotografía real.'
+    },
+
+    {
+      src: 'images/mexico-real-09.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'Esta escena fue capturada mediante una cámara.'
+    },
+
+    {
+      src: 'images/mexico-real-10.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'La imagen corresponde a una fotografía auténtica.'
+    },
+
+    {
+      src: 'images/mexico-real-11.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'Esta es una fotografía real.'
+    },
+
+    {
+      src: 'images/mexico-real-12.jpg',
+      type: 'real',
+      title: 'Fotografía real ',
+      explanation: 'La escena fue capturada en el mundo real.'
+    },
+
+    {
+      src: 'images/mexico-real-13.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'Esta imagen no fue generada por inteligencia artificial.'
+    },
+
+    {
+      src: 'images/mexico-real-14.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'Esta imagen proviene de una fotografía auténtica.'
+    },
+
+    {
+      src: 'images/mexico-real-15.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'La escena corresponde al mundo real.'
+    },
+
+    {
+      src: 'images/mexico-real-16.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'Esta fotografía fue capturada con una cámara.'
+    },
+
+    {
+      src: 'images/mexico-real-17.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'Esta imagen corresponde a una escena auténtica.'
+    },
+
+    {
+      src: 'images/mexico-real-18.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'La imagen es una fotografía real.'
+    },
+
+    {
+      src: 'images/mexico-real-19.jpg',
+      type: 'real',
+      title: 'Fotografía real ',
+      explanation: 'Esta escena fue capturada directamente con una cámara.'
+    },
+
+    {
+      src: 'images/mexico-real-20.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'Esta fotografía representa una escena real.'
+    },
+
+    {
+      src: 'images/mexico-real-21.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'La imagen proviene del mundo real.'
+    },
+
+    {
+      src: 'images/mexico-real-22.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'Esta imagen corresponde a una fotografía auténtica.'
+    },
+
+    {
+      src: 'images/mexico-real-23.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'La escena fue registrada mediante una cámara.'
+    },
+
+    {
+      src: 'images/mexico-real-24.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'Esta imagen no fue creada mediante inteligencia artificial.'
+    },
+
+    {
+      src: 'images/mexico-real-25.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'Esta es una fotografía auténtica.'
+    },
+
+    {
+      src: 'images/mexico-real-26.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'Esta escena corresponde a una fotografía real.'
+    },
+
+    {
+      src: 'images/mexico-real-27.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'La imagen fue capturada directamente con una cámara.'
+    },
+
+    {
+      src: 'images/mexico-real-28.jpg',
+      type: 'real',
+      title: 'Fotografía real',
+      explanation: 'La fotografía muestra una escena auténtica.'
+    },
+
+    {
+      src: 'images/mexico-real-29.jpg',
+      type: 'real',
+      title: 'Fotografía real ',
+      explanation: 'Esta imagen corresponde al mundo real.'
+    },
+
+    {
+      src: 'images/mexico-real-30.jpg',
+      type: 'real',
+      title: 'Fotografía real ',
+      explanation: 'Esta fotografía fue capturada mediante una cámara.'
+    },
+
+
+    // =========================
+    // INTELIGENCIA ARTIFICIAL
+    // =========================
+{
+  src: 'images/mexico-ia-01.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por rostros y manos borrosos, autos y placas deformes, objetos incoherentes y texturas artificialmente lisas.'
+},
+
+{
+  src: 'images/mexico-ia-02.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por la iluminación saturada, texturas plásticas, texto irregular y detalles arquitectónicos deformes.'
+},
+
+{
+  src: 'images/mexico-ia-03.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por acciones ilógicas, hojas enredadas, reloj y logotipo deformes y rostros borrosos.'
+},
+
+{
+  src: 'images/mexico-ia-04.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por dedos fusionados, reloj deforme, logotipos distorsionados y rostros poco definidos.'
+},
+
+{
+  src: 'images/mexico-ia-05.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por manos con proporciones antinaturales, rostros deformes y arquitectura y letreros inconsistentes.'
+},
+
+{
+  src: 'images/mexico-ia-06.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por peatones deformes, señales ilegibles, estructuras irreales y objetos del fondo poco definidos.'
+},
+
+{
+  src: 'images/mexico-ia-07.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por lentes deformes, sombras incoherentes, accesorios fusionados y detalles de la ropa asimétricos.'
+},
+
+{
+  src: 'images/mexico-ia-08.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por vegetación fusionada, rocas con aspecto plástico, ramas irregulares e iluminación poco natural.'
+},
+
+{
+  src: 'images/mexico-ia-09.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por manos y pies poco definidos, texturas demasiado suavizadas, flores deformes e iluminación artificial.'
+},
+
+{
+  src: 'images/mexico-ia-10.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por peatones deformes, señales ilegibles, estructuras irreales y objetos del entorno poco definidos.'
+},
+
+{
+  src: 'images/mexico-ia-11.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por agua y espuma demasiado uniformes, rocas plásticas, vegetación borrosa e iluminación artificial.'
+},
+
+{
+  src: 'images/mexico-ia-12.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por brazos y manos en posiciones confusas, colores artificiales, logotipos distorsionados y desenfoque poco natural.'
+},
+
+{
+  src: 'images/mexico-ia-13.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por una luna excesivamente uniforme, bordes suavizados, halo artificial y vegetación poco definida.'
+},
+
+{
+  src: 'images/mexico-ia-14.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por iluminación y muebles demasiado uniformes, detalles poco definidos y texturas sintéticas.'
+},
+
+{
+  src: 'images/mexico-ia-15.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada o editada con IA,  reflejos demasiado perfectos, vegetación repetitiva y texturas pictóricas.'
+},
+
+{
+  src: 'images/mexico-ia-16.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por la simetría excesiva del rostro, pelaje repetitivo, contraluz uniforme y desenfoque artificial.'
+},
+
+{
+  src: 'images/mexico-ia-17.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada o editada con IA, vehículos y estructuras poco definidos y texturas excesivamente uniformes.'
+},
+
+{
+  src: 'images/mexico-ia-18.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada o editada con IA, por texturas repetitivas, sombras incoherentes y bordes irregularmente desenfocados.'
+},
+
+{
+  src: 'images/mexico-ia-19.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por relieves repetitivos, figura humana poco definida, sombras suavizadas y simetría excesiva.'
+},
+
+{
+  src: 'images/mexico-ia-20.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por rostros borrosos, manos y extremidades confusas, uniformes incoherentes y figuras fusionadas.'
+},
+
+{
+  src: 'images/mexico-ia-21.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por manos y dedos inconsistentes, prendas demasiado suavizadas, rostros deformes y luces excesivamente uniformes.'
+},
+
+{
+  src: 'images/mexico-ia-22.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA,  por herramientas deformes, componentes fusionados y texturas pictóricas.'
+},
+
+{
+  src: 'images/mexico-ia-23.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es probablemente generada por IA por manos en posiciones forzadas, expresiones exageradas, texturas uniformes y elementos repetitivos.'
+},
+
+{
+  src: 'images/mexico-ia-24.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada o editada con IA por pelaje repetitivo, rostro excesivamente simétrico y texturas suaves y homogéneas.'
+},
+
+{
+  src: 'images/mexico-ia-25.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por dedos deformes, anatomía extraña, rostro excesivamente suavizado y texturas difusas y uniformes.'
+},
+
+{
+  src: 'images/mexico-ia-26.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es probablemente generada por IA por ojos excesivamente uniformes, pelaje repetitivo, bigotes irregulares y desenfoque homogéneo.'
+},
+
+{
+  src: 'images/mexico-ia-27.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por reflejos demasiado simétricos, niebla y montañas uniformes, vegetación repetitiva y colores artificiales.'
+},
+
+{
+  src: 'images/mexico-ia-28.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por una criatura con anatomía incoherente, rostros borrosos, sombras inconsistentes y texturas artificiales.'
+},
+
+{
+  src: 'images/mexico-ia-29.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA por personas poco definidas, vegetación repetitiva, reflejos uniformes y un acabado excesivamente homogéneo.'
+},
+
+{
+  src: 'images/mexico-ia-30.jpg',
+  type: 'ia',
+  title: 'Imagen generada con IA',
+  explanation: 'Es generada por IA,  por anatomía poco natural, pelaje uniforme, vegetación repetitiva e iluminación artificial.'
+},
+
+  ];
+
+
+  // ============================================================
+  // VARIABLES DEL JUEGO
+  // ============================================================
+
+  let round = 1;
+
+  let index = 0;
+
+  let points = 0;
+
+  let totalPoints = 0;
+
+  let answered = false;
+
+  // Guarda las imágenes utilizadas.
+  let usedImages = [];
+
+  // Aquí estarán únicamente las 10 imágenes de la ronda actual.
+  let images = [];
+
+
+  // ============================================================
+  // ELEMENTOS HTML
+  // ============================================================
+
+  let photo;
+  let fallback;
+  let feedback;
+
+  let realBtn;
+  let aiBtn;
+  let nextBtn;
+
+
+  // ============================================================
+  // OBTENER ELEMENTOS HTML
+  // ============================================================
+
+  function getElements() {
+
+    photo = document.querySelector('#photo');
+
+    fallback = document.querySelector('#fallback');
+
+    feedback = document.querySelector('#feedback');
+
+    realBtn = document.querySelector('#realBtn');
+
+    aiBtn = document.querySelector('#aiBtn');
+
+    nextBtn = document.querySelector('#nextBtn');
+
+
+    realBtn.onclick = () => answer('real');
+
+    aiBtn.onclick = () => answer('ia');
+
+    nextBtn.onclick = next;
+
+  }
+
+
+  // ============================================================
+  // MEZCLAR ARRAY
+  // Fisher-Yates
+  // ============================================================
+
+  function shuffle(array) {
+
+    const result = [...array];
+
+    for (let i = result.length - 1; i > 0; i--) {
+
+      const j = Math.floor(Math.random() * (i + 1));
+
+      [result[i], result[j]] = [result[j], result[i]];
+
+    }
+
+    return result;
+  }
+
+
+  // ============================================================
+  // CREAR UNA NUEVA RONDA
+  // ============================================================
+
+  function createRound() {
+
+    // ==============================
+    // BUSCAMOS REALES DISPONIBLES
+    // ==============================
+
+    const availableReal = allImages.filter(image => {
+
+      return image.type === 'real'
+        && !usedImages.includes(image.src);
+
+    });
+
+
+    // ==============================
+    // BUSCAMOS IA DISPONIBLES
+    // ==============================
+
+    const availableAI = allImages.filter(image => {
+
+      return image.type === 'ia'
+        && !usedImages.includes(image.src);
+
+    });
+
+
+    // ==============================
+    // VALIDACIÓN
+    // ==============================
+
+    if (
+      availableReal.length < IMAGES_PER_TYPE ||
+      availableAI.length < IMAGES_PER_TYPE
+    ) {
+
+      console.log('Todas las imágenes fueron utilizadas.');
+
+      usedImages = [];
+
+      round = 1;
+
+      totalPoints = 0;
+
+      return createRound();
+
+    }
+
+
+    // ==============================
+    // SELECCIONAMOS 5 REALES
+    // ==============================
+
+    const selectedReal = shuffle(availableReal)
+      .slice(0, IMAGES_PER_TYPE);
+
+
+    // ==============================
+    // SELECCIONAMOS 5 IA
+    // ==============================
+
+    const selectedAI = shuffle(availableAI)
+      .slice(0, IMAGES_PER_TYPE);
+
+
+    // ==============================
+    // JUNTAMOS Y MEZCLAMOS
+    // ==============================
+
+    images = shuffle([
+
+      ...selectedReal,
+
+      ...selectedAI
+
+    ]);
+
+
+    // ==============================
+    // GUARDAMOS LAS UTILIZADAS
+    // ==============================
+
+    images.forEach(image => {
+
+      usedImages.push(image.src);
+
+    });
+
+
+    // ==============================
+    // REINICIAR RONDA
+    // ==============================
+
+    index = 0;
+
+    points = 0;
+
+    answered = false;
+
+
+    console.log(
+      `Ronda ${round}:`,
+      images
+    );
+
+  }
+
+
+  // ============================================================
+  // CARGAR IMAGEN
+  // ============================================================
+
+  function load() {
+
+    answered = false;
+
+
+    // Limpiar feedback
+
+    feedback.className = 'feedback';
+
+    feedback.style.display = 'none';
+
+
+    // Ocultar siguiente
+
+    nextBtn.style.display = 'none';
+
+
+    // Activar botones
+
+    realBtn.disabled = false;
+
+    aiBtn.disabled = false;
+
+
+    // ==============================
+    // CONTADOR
+    // ==============================
+
+    document.querySelector('#counter').textContent =
+      `Ronda ${round} de ${TOTAL_ROUNDS} · Imagen ${index + 1} de ${ROUND_SIZE}`;
+
+
+    // ==============================
+    // PUNTOS
+    // ==============================
+
+    document.querySelector('#score').textContent =
+      `Puntos: ${points}`;
+
+
+    // ==============================
+    // BARRA DE PROGRESO
+    // ==============================
+
+    document.querySelector('#bar').style.width =
+      `${(index / images.length) * 100}%`;
+
+
+    // ==============================
+    // CARGAR IMAGEN
+    // ==============================
+
+    fallback.hidden = true;
+
+    photo.hidden = false;
+
+    photo.src = images[index].src;
+
+    photo.alt = images[index].title;
+
+
+    // ==============================
+    // ERROR DE IMAGEN
+    // ==============================
+
+    photo.onerror = () => {
+
+      photo.hidden = true;
+
+      fallback.hidden = false;
+
+      fallback.innerHTML = `
+
+        Falta cargar:
+
+        <br>
+
+        <strong>
+          ${images[index].src}
+        </strong>
+
+        <br>
+
+        <small>
+          Coloca la imagen dentro de la carpeta images.
+        </small>
+
+      `;
+
+    };
+
+  }
+
+
+  // ============================================================
+  // RESPONDER
+  // ============================================================
+
+  function answer(choice) {
+
+    // Evita contestar dos veces
+
+    if (answered) {
+      return;
+    }
+
+
+    answered = true;
+
+
+    const item = images[index];
+
+
+    const correct =
+      choice === item.type;
+
+
+    // ==============================
+    // RESPUESTA CORRECTA
+    // ==============================
+
+    if (correct) {
+
+      points++;
+
+      totalPoints++;
+
+    }
+
+
+    // ==============================
+    // MOSTRAR FEEDBACK
+    // ==============================
+
+    feedback.className =
+      `feedback ${correct ? 'ok' : 'bad'}`;
+
+
+    feedback.style.display = 'block';
+
+
+    feedback.innerHTML = `
+
+      <strong>
+
+        ${
+          correct
+            ? '✅ ¡Correcto!'
+            : '❌ No esta vez.'
+        }
+
+      </strong>
+
+      <br>
+
+      ${item.title}.
+
+      ${item.explanation}
+
+    `;
+
+
+    // ==============================
+    // ACTUALIZAR PUNTOS
+    // ==============================
+
+    document.querySelector('#score').textContent =
+      `Puntos: ${points}`;
+
+
+    // ==============================
+    // BLOQUEAR RESPUESTAS
+    // ==============================
+
+    realBtn.disabled = true;
+
+    aiBtn.disabled = true;
+
+
+    // ==============================
+    // MOSTRAR SIGUIENTE
+    // ==============================
+
+    nextBtn.style.display = 'block';
+
+
+    if (index === images.length - 1) {
+
+      nextBtn.textContent =
+        'Ver resultado →';
+
+    } else {
+
+      nextBtn.textContent =
+        'Siguiente imagen →';
+
+    }
+
+  }
+
+
+  // ============================================================
+  // SIGUIENTE IMAGEN
+  // ============================================================
+
+  function next() {
+
+    index++;
+
+
+    // Todavía quedan imágenes.
+
+    if (index < images.length) {
+
+      load();
+
+      return;
+
+    }
+
+
+    // Terminó la ronda.
+
+    showRoundResult();
+
+  }
+
+
+  // ============================================================
+  // RESULTADO DE LA RONDA
+  // ============================================================
+
+  function showRoundResult() {
+
+    const percentage =
+      Math.round(
+        (points / images.length) * 100
+      );
+
+
+    let emoji;
+
+    let message;
+
+
+    if (percentage >= 80) {
+
+      emoji = '🏆';
+
+      message =
+        '¡Excelente ojo para detectar imágenes de IA!';
+
+    }
+
+    else if (percentage >= 50) {
+
+      emoji = '👏';
+
+      message =
+        'Buen resultado. Algunas imágenes todavía lograron engañarte.';
+
+    }
+
+    else {
+
+      emoji = '🔎';
+
+      message =
+        'La IA puede ser convincente. Revisa las pistas y sigue practicando.';
+
+    }
+
+
+    // ==============================
+    // ¿ÚLTIMA RONDA?
+    // ==============================
+
+    const lastRound =
+      round === TOTAL_ROUNDS;
+
+
+    document.querySelector('#game').innerHTML = `
+
+      <div class="end">
+
+        <div style="font-size:3rem">
+          ${emoji}
+        </div>
+
+        <p>
+          Ronda ${round} de ${TOTAL_ROUNDS}
+        </p>
+
+        <h2>
+          ${points}/${ROUND_SIZE}
+        </h2>
+
+        <p>
+
+          Acertaste el
+
+          <strong>
+            ${percentage}%
+          </strong>
+
+          de las imágenes.
+
+        </p>
+
+        <p>
+          ${message}
+        </p>
+
+
+        ${
+          !lastRound
+            ?
+
+            `
+
+            <button
+              class="restart"
+              onclick="nextRound()">
+
+              Siguiente ronda →
+
+            </button>
+
+            `
+
+            :
+
+            `
+
+            <button
+              class="restart"
+              onclick="showFinalResult()">
+
+              Ver resultado final 🏆
+
+            </button>
+
+            `
+        }
+
+      </div>
+
+    `;
+
+  }
+
+
+  // ============================================================
+  // SIGUIENTE RONDA
+  // ============================================================
+
+  function nextRound() {
+
+    round++;
+
+    createRound();
+
+    createGameHTML();
+
+    getElements();
+
+    load();
+
+  }
+
+
+  // ============================================================
+  // CREAR NUEVAMENTE EL HTML DEL JUEGO
+  // ============================================================
+
+  function createGameHTML() {
+
+    document.querySelector('#game').innerHTML = `
+
+      <div class="progress">
+
+        <div
+          class="bar"
+          id="bar">
+        </div>
+
+      </div>
+
+
+      <p
+        class="question"
+        id="counter">
+      </p>
+
+
+      <div class="frame">
+
+        <img
+          id="photo"
+          alt="Imagen de México"
+        >
+
+        <div
+          class="fallback"
+          id="fallback"
+          hidden>
+        </div>
+
+      </div>
+
+
+      <div class="buttons">
+
+        <button
+          class="real"
+          id="realBtn">
+
+          📷 Es REAL
+
+        </button>
+
+
+        <button
+          class="ai"
+          id="aiBtn">
+
+          🤖 Es IA
+
+        </button>
+
+      </div>
+
+
+      <div
+        class="feedback"
+        id="feedback">
+      </div>
+
+
+      <button
+        class="next"
+        id="nextBtn">
+
+        Siguiente imagen →
+
+      </button>
+
+
+      <p class="tiny">
+
+        Observa detalles, iluminación, manos,
+        letras, sombras y repeticiones.
+
+      </p>
+
+    `;
+
+  }
+
+
+  // ============================================================
+  // RESULTADO FINAL
+  // ============================================================
+
+  function showFinalResult() {
+
+    const totalImages =
+      TOTAL_ROUNDS * ROUND_SIZE;
+
+
+    const percentage =
+      Math.round(
+        (totalPoints / totalImages) * 100
+      );
+
+
+    let emoji;
+
+    let message;
+
+
+    if (percentage >= 80) {
+
+      emoji = '🏆';
+
+      message =
+        '¡Excelente! Tienes muy buen ojo para identificar imágenes generadas con IA.';
+
+    }
+
+    else if (percentage >= 50) {
+
+      emoji = '👏';
+
+      message =
+        'Buen trabajo. Algunas imágenes de IA consiguieron engañarte.';
+
+    }
+
+    else {
+
+      emoji = '🔎';
+
+      message =
+        'Las imágenes generadas con IA pueden ser muy convincentes. ¡Inténtalo nuevamente!';
+
+    }
+
+
+    document.querySelector('#score').textContent =
+      `Total: ${totalPoints}/${totalImages}`;
+
+
+    document.querySelector('#game').innerHTML = `
+
+      <div class="end">
+
+        <div style="font-size:4rem">
+          ${emoji}
+        </div>
+
+
+        <h2>
+          Resultado final
+        </h2>
+
+
+        <p>
+          Completaste las
+          <strong>
+            ${TOTAL_ROUNDS} rondas
+          </strong>.
+        </p>
+
+
+        <h2>
+          ${totalPoints}/${totalImages}
+        </h2>
+
+
+        <p>
+
+          Acertaste el
+
+          <strong>
+            ${percentage}%
+          </strong>
+
+          de las imágenes.
+
+        </p>
+
+
+        <p>
+          ${message}
+        </p>
+
+
+        <button
+          class="restart"
+          onclick="restartGame()">
+
+          🔄 Jugar de nuevo
+
+        </button>
+
+      </div>
+
+    `;
+
+  }
+
+
+  // ============================================================
+  // REINICIAR TODO EL JUEGO
+  // ============================================================
+
+  function restartGame() {
+
+    round = 1;
+
+    index = 0;
+
+    points = 0;
+
+    totalPoints = 0;
+
+    answered = false;
+
+    // Permite usar nuevamente las 60 imágenes.
+    usedImages = [];
+
+
+    createRound();
+
+    createGameHTML();
+
+    getElements();
+
+    load();
+
+  }
+
+
+  // ============================================================
+  // INICIAR JUEGO
+  // ============================================================
+
+  createRound();
+
+  getElements();
+
+  load();
+
+</script>
+
+</body>
+
+</html>
